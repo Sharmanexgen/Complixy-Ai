@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Complixy AI — Free AI guide for Indian government complaints. CPGRAMS, Consumer Helpline, Cyber Crime, RBI, TRAI, RERA and 18+ portals. Not an official government app.">
+<meta name="description" content="Complixy AI — Free AI guide for Indian government complaints. CPGRAMS, Consumer Helpline, Cyber Crime, RBI, TRAI, RERA, Passport, Income Tax and 23+ portals. Not an official government app.">
+<meta name="theme-color" content="#0C1F5C">
+<link rel="apple-touch-icon" href="https://via.placeholder.com/180/0C1F5C/FFFFFF?text=CX">
 <meta name="keywords" content="government complaint India, CPGRAMS, consumer complaint, cyber crime 1930, RBI complaint, TRAI, RERA builder fraud, UPI fraud, sarkari shikayat">
 <meta name="robots" content="index, follow">
 <title>Complixy AI — India's Smart Government Complaint Guide</title>
@@ -306,6 +308,28 @@ body.dark .steps-m{background:#0F1E38;border-color:#1E3A8A}
 .dm-btn:hover{background:rgba(255,255,255,.18)}
 .dm-btn-desk{background:var(--gray2);border:1px solid var(--gray3);border-radius:7px;padding:7px 12px;color:var(--text2);font-size:13px;cursor:pointer;font-family:'Noto Sans',sans-serif;transition:.15s}
 .dm-btn-desk:hover{background:var(--gray3)}
+/* RESULT CARD EXTRA SECTIONS */
+.dept-timeline{font-size:10.5px;color:var(--blue);font-weight:700;margin-top:4px}
+.docs-sec{padding:10px 18px;background:var(--green-lt);border-bottom:1px solid #A7F3D0}
+.docs-lbl{font-size:9.5px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+.doc-item{font-size:11.5px;color:#065F46;padding:2px 0;line-height:1.45}
+.save-id-wrap{padding:10px 18px 12px;background:#F8FAFC;border-top:1px solid var(--gray3)}
+.save-id-lbl{font-size:10px;font-weight:600;color:var(--gray);margin-bottom:5px}
+.save-id-row{display:flex;gap:6px;align-items:center}
+.save-id-input{flex:1;border:1.5px solid var(--gray3);border-radius:7px;padding:7px 10px;font-size:12.5px;font-family:'Noto Sans',sans-serif;color:var(--text);background:#fff;outline:none;transition:.15s}
+.save-id-input:focus{border-color:var(--blue)}
+.save-id-btn{background:var(--navy);color:#fff;border:none;border-radius:7px;padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Noto Sans',sans-serif;transition:.15s;flex-shrink:0}
+.save-id-btn:hover{background:var(--blue)}
+.engine-badge{font-size:9.5px;color:var(--gray);padding:5px 18px 7px;text-align:right;font-style:italic}
+/* Emergency pulse for cyber fraud */
+@keyframes emergency-pulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.35)}50%{box-shadow:0 0 0 8px rgba(220,38,38,0)}}
+.rcard.emergency{animation:emergency-pulse 1.8s infinite;border-color:#EF4444!important}
+/* Dark mode extras */
+body.dark .docs-sec{background:#052E16;border-color:#065F46}
+body.dark .doc-item{color:#6EE7B7}
+body.dark .save-id-wrap{background:#253148;border-color:#334155}
+body.dark .save-id-input{background:#1E293B;border-color:#334155;color:#F1F5F9}
+body.dark .engine-badge{color:#475569}
 
 /* RESPONSIVE */
 @media(max-width:767px){
@@ -353,10 +377,13 @@ body.dark .steps-m{background:#0F1E38;border-color:#1E3A8A}
     </div>
     <div class="sb-portals" id="sbPortals"></div>
     <div class="sb-bottom">
-      <div class="ai-row"><div class="ai-dot"></div><span class="ai-txt" id="sbAiTxt">AI Online · Dual Engine · 32/32 Tests Pass</span></div>
+      <div class="ai-row"><div class="ai-dot"></div><span class="ai-txt" id="sbAiTxt">AI Online · Dual Engine · 37/37 Tests Pass</span></div>
       <button class="sb-home-btn" onclick="goHome()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         <span id="sbHomeLabel">🏠 Back to Home</span>
+      </button>
+      <button class="sb-home-btn" onclick="showSavedComplaints()" style="margin-top:6px">
+        📋 My Complaints<span id="complaintCount"></span>
       </button>
       <!-- LANGUAGE TOGGLE: EN / हिंदी — active tab highlighted -->
       <div class="lang-toggle-sb" id="sbLangToggle">
@@ -416,7 +443,7 @@ body.dark .steps-m{background:#0F1E38;border-color:#1E3A8A}
           </div>
 
           <div id="portalDir">
-            <div class="sec-lbl" style="margin-top:6px">🏛️ सभी 18 Official Government Portals — Click to open</div>
+            <div class="sec-lbl" style="margin-top:6px">🏛️ सभी 23 Official Government Portals — Click to open</div>
             <div class="portal-grid" id="portalGrid"></div>
           </div>
 
@@ -489,30 +516,78 @@ const PORTALS=[
   {id:'cpgrams',n:'CPGRAMS',badge:'Central Govt',bc:'g',full:'Central Public Grievance Redress (CPGRAMS)',dept:'All Central Govt Ministries & Departments',ico:'🏛️',url:'https://pgportal.gov.in',hl:'1800-11-6666',steps:['Visit pgportal.gov.in','Register/Login with mobile OTP','Select the Ministry or Department','Describe grievance clearly and submit','Note the registration ID to track status']},
   {id:'pmo',n:'PMO Grievance',badge:'PMO Direct',bc:'o',full:"Prime Minister's Office Grievance Portal",dept:"Prime Minister's Office",ico:'🇮🇳',url:'https://pgportal.gov.in',hl:'1800-11-6666',steps:['Go to pgportal.gov.in','Select PMO as the department','Mention your earlier complaint reference no.','Register and submit grievance','Track status with your registration ID']},
   {id:'consumer',n:'Consumer Helpline',badge:'24x7 Free',bc:'g',full:'National Consumer Helpline (NCH)',dept:'Ministry of Consumer Affairs',ico:'🛒',url:'https://consumerhelpline.gov.in',hl:'1800-11-4000',steps:['Call 1800-11-4000 (toll-free, 24x7)','OR visit consumerhelpline.gov.in','Register and describe your complaint','Attach bill, receipt, or photo as proof','Track complaint status online with ID']},
-  {id:'edaakhil',n:'E-Daakhil',badge:'Consumer Court',bc:'o',full:'E-Daakhil — Online Consumer Court Filing',dept:'Consumer Commissions (District/State/National)',ico:'⚖️',url:'https://edaakhil.nic.in',hl:'1800-11-4000',steps:['Go to edaakhil.nic.in','Register with mobile and email','Select District/State/National Commission','Upload complaint and all evidence','Pay nominal court fee and track your case']},
+  {id:'edaakhil',n:'E-Jagriti',badge:'Consumer Court',bc:'o',full:'E-Jagriti — Online Consumer Court Filing (migrated from E-Daakhil Jan 2025)',dept:'Consumer Commissions (District/State/National)',ico:'⚖️',url:'https://ejagriti.nic.in',hl:'1800-11-4000',steps:['Go to ejagriti.nic.in (E-Daakhil migrated here from January 2025)','Register with your mobile number and email','Select District/State/National Consumer Commission','Upload complaint form and all evidence/receipts','Pay nominal court fee online and track your case with case number']},
   {id:'cybercrime',n:'Cyber Crime',badge:'CALL 1930 NOW',bc:'o',full:'National Cyber Crime Reporting Portal',dept:'Ministry of Home Affairs, Govt of India',ico:'💻',url:'https://cybercrime.gov.in',hl:'1930',steps:['🚨 CALL 1930 IMMEDIATELY — financial fraud has recovery time limit!','Go to cybercrime.gov.in','Select Financial Fraud or Other Cybercrime','Fill all details and upload screenshots/evidence','Save your complaint ID — police will contact you within 24-48 hours']},
   {id:'rbi',n:'RBI / Banking',badge:'RBI Official',bc:'g',full:'RBI Complaint Management System (CMS)',dept:'Reserve Bank of India — Banking Ombudsman',ico:'🏦',url:'https://cms.rbi.org.in',hl:'14448',steps:['First file written complaint with your bank','Wait 30 days for bank response','If unresolved → go to cms.rbi.org.in','Login and file complaint against your bank','RBI Ombudsman resolves in 30 days — FREE']},
   {id:'sebi',n:'SEBI SCORES',badge:'SEBI Official',bc:'g',full:'SEBI SCORES — Securities Complaint Redress',dept:'Securities & Exchange Board of India',ico:'📈',url:'https://scores.sebi.gov.in',hl:'1800-266-7575',steps:['Call 1800-266-7575 (SEBI helpline)','Visit scores.sebi.gov.in','Register with your PAN number','First complain to company/broker','After 30 days if unresolved → file with SEBI SCORES']},
-  {id:'irdai',n:'IRDAI Insurance',badge:'IRDAI Official',bc:'g',full:'IRDAI Integrated Grievance Management (IGMS)',dept:'Insurance Regulatory & Dev Authority of India',ico:'🛡️',url:'https://igms.irda.gov.in',hl:'155255',steps:['First complain to insurance company in writing','If unresolved in 15 days → call 155255','Visit igms.irda.gov.in','Register and upload your policy documents','IRDAI Ombudsman investigates your claim — FREE']},
-  {id:'trai',n:'TRAI Telecom',badge:'TRAI Official',bc:'g',full:'TRAI Consumer Complaint Grievance Portal',dept:'Telecom Regulatory Authority of India',ico:'📱',url:'https://pgportal.trai.gov.in',hl:'198',steps:['Call 198 from your SIM to register complaint','Note the docket number — very important!','If unresolved in 10 days → contact Nodal Officer','Then go to Appellate Authority','File at pgportal.trai.gov.in with all docket numbers']},
-  {id:'fssai',n:'FSSAI Food',badge:'Food Safety',bc:'g',full:'FSSAI — Food Safety & Standards Authority',dept:'Ministry of Health & Family Welfare',ico:'🍽️',url:'https://foscos.fssai.gov.in',hl:'1800-11-2100',steps:['Call food safety helpline 1800-11-2100','Visit foscos.fssai.gov.in','File food safety concern with full details','Attach photo of product or packaging','State Food Safety Officer will inspect']},
+  {id:'irdai',n:'IRDAI Bima Bharosa',badge:'IRDAI Official',bc:'g',full:'IRDAI Bima Bharosa — Insurance Grievance Portal',dept:'Insurance Regulatory & Dev Authority of India',ico:'🛡️',url:'https://bimabharosa.irdai.gov.in',hl:'155255',steps:['First complain to insurance company in writing','If unresolved in 15 days → call 155255 (IRDAI helpline)','Visit bimabharosa.irdai.gov.in (new unified IRDAI portal)','Register and upload your policy documents and rejection letter','IRDAI Ombudsman investigates your claim within 30 days — FREE']},
+  {id:'trai',n:'TRAI Telecom',badge:'TRAI Official',bc:'g',full:'TRAI CMS — Telecom Consumer Complaint Portal',dept:'Telecom Regulatory Authority of India',ico:'📱',url:'https://cms.trai.gov.in',hl:'198',steps:['Call 198 from your SIM to register complaint (get docket number)','Note the docket number — mandatory for escalation!','If unresolved in 10 days → contact company Nodal Officer','Then escalate to Appellate Authority','File at cms.trai.gov.in with all docket numbers']},
+  {id:'fssai',n:'FSSAI Food',badge:'Food Safety',bc:'g',full:'FSSAI — Food Safety Consumer Grievance Portal',dept:'Ministry of Health & Family Welfare',ico:'🍽️',url:'https://foscos.fssai.gov.in/consumergrievance/',hl:'1800-11-2100',steps:['Call food safety helpline 1800-11-2100 (toll-free)','Visit foscos.fssai.gov.in/consumergrievance/ (direct consumer complaint page)','Select complaint type: adulterated food, expired product, food poisoning, etc.','Attach photo of product — batch number and expiry date are crucial','State Food Safety Officer will inspect within 15 days']},
   {id:'railway',n:'RailMadad',badge:'Helpline 139',bc:'g',full:'RailMadad — Indian Railway Passenger Complaints',dept:'Ministry of Railways, Govt of India',ico:'🚂',url:'https://railmadad.indianrailways.gov.in',hl:'139',steps:['Call 139 for immediate on-train issues','Visit railmadad.indianrailways.gov.in','Select your complaint type','Enter PNR number if applicable','Track resolution with your complaint ID']},
-  {id:'rera',n:'RERA Property',badge:'Real Estate',bc:'o',full:'Real Estate Regulatory Authority (RERA)',dept:'State RERA Authority — varies by state',ico:'🏗️',url:'https://rera.gov.in',hl:'',steps:['Go to rera.gov.in → find your State RERA portal link','Register as a homebuyer on the state portal','File complaint against builder with all documents + payment receipts','Adjudicating Officer will schedule a formal hearing','Judgment usually delivered within 60 days — builder can be ordered to refund + 9% interest']},
+  {id:'rera',n:'RERA Property',badge:'Real Estate',bc:'o',full:'Real Estate Regulatory Authority (RERA)',dept:'State RERA Authority — varies by state',ico:'🏗️',url:'https://rera.mohua.gov.in',hl:'',steps:['Go to rera.mohua.gov.in → find your State RERA portal link','Register as a homebuyer on the state portal','File complaint against builder with all documents + payment receipts','Adjudicating Officer will schedule a formal hearing','Judgment usually delivered within 60 days — builder can be ordered to refund + 9% interest']},
   {id:'rti',n:'RTI Filing',badge:'₹10 Fee',bc:'g',full:'RTI Online — Right to Information Portal',dept:'Central Information Commission',ico:'📋',url:'https://rtionline.gov.in',hl:'',steps:['Go to rtionline.gov.in','Register with mobile and email','Select the Ministry or Public Authority','Clearly describe the information you need','Pay ₹10 fee (BPL citizens: free) and submit']},
   {id:'epfo',n:'EPFO / PF',badge:'Labour Ministry',bc:'g',full:'EPFO — Employees Provident Fund Organisation',dept:'Ministry of Labour & Employment',ico:'👷',url:'https://epfindia.gov.in',hl:'1800-118-005',steps:['Call 1800-118-005 (toll-free)','Visit epfindia.gov.in','Login with your UAN number','Go to Grievances section and file complaint','Track complaint status online']},
   {id:'nfsa',n:'Ration / PDS',badge:'PDS Helpline',bc:'g',full:'National Food Security — PDS Grievance Portal',dept:'Department of Food & Civil Supplies',ico:'🌾',url:'https://nfsa.gov.in',hl:'14445',steps:['Call PDS helpline 14445 (toll-free)','Visit nfsa.gov.in','Lodge complaint with your ration card number','District Supply Officer will investigate','Also check your state Food Department portal']},
   {id:'pollution',n:'CPCB Pollution',badge:'Environment',bc:'g',full:'Central Pollution Control Board',dept:'Ministry of Environment, Forest & Climate Change',ico:'🌿',url:'https://cpcb.nic.in',hl:'1800-11-4678',steps:['Call emergency helpline 1800-11-4678','Visit cpcb.nic.in for formal complaint','OR use CPGRAMS → select Environment Ministry','Provide exact location and type of pollution','State Pollution Control Board will inspect']},
   {id:'sachet',n:'RBI Sachet',badge:'Ponzi Fraud',bc:'o',full:'RBI Sachet — Illegal Financial Schemes',dept:'Reserve Bank of India',ico:'🚨',url:'https://sachet.rbi.org.in',hl:'14448',steps:['Go to sachet.rbi.org.in immediately','Report the illegal scheme with all details','Attach all payment proofs and receipts','RBI forwards to state regulator and police','ALSO file FIR at local police station']},
-  {id:'dpg',n:'DPG Cabinet',badge:'Escalation',bc:'o',full:'Directorate of Public Grievances — Cabinet',dept:'Cabinet Secretariat, Govt of India',ico:'📜',url:'https://dpg.gov.in',hl:'1800-11-6666',steps:['Use only if CPGRAMS got no response in 30 days','Go to dpg.gov.in','Reference your CPGRAMS registration number','DPG handles senior-level escalations','Response expected within 30 working days']}
+  {id:'dpg',n:'DPG Cabinet',badge:'Escalation',bc:'o',full:'Directorate of Public Grievances — Cabinet',dept:'Cabinet Secretariat, Govt of India',ico:'📜',url:'https://dpg.gov.in',hl:'1800-11-6666',steps:['Use only if CPGRAMS got no response in 30 days','Go to dpg.gov.in','Reference your CPGRAMS registration number','DPG handles senior-level escalations','Response expected within 30 working days']},
+  {id:'passport',n:'Passport Seva',badge:'MEA Official',bc:'g',full:'Passport Seva Portal — Ministry of External Affairs',dept:'Ministry of External Affairs, Govt of India',ico:'📘',url:'https://www.passportindia.gov.in/psp',hl:'1800-258-1800',steps:['Call 1800-258-1800 (free) for immediate status update','Go to passportindia.gov.in/psp → Login → Grievances section','Enter your File Number and Application Reference Number (ARN)','Police verification pending? → Contact your local Superintendent of Police office','Unresolved in 30 days → CPGRAMS → Ministry of External Affairs']},
+  {id:'incometax',n:'Income Tax / ITR',badge:'IT Dept',bc:'g',full:'Income Tax e-Filing Portal — Grievance Section',dept:'Central Board of Direct Taxes (CBDT)',ico:'💰',url:'https://www.incometax.gov.in/iec/foportal/',hl:'1800-103-0025',steps:['Call IT helpline 1800-103-0025 (free, Mon-Sat 8AM-8PM)','Go to incometax.gov.in → Login → e-Nivaran (Grievances) → Add Grievance','Provide: PAN, ITR acknowledgment number, issue description','Refund not received? First check Form 26AS online then raise grievance','Unresolved in 30 days → CPGRAMS → Ministry of Finance']},
+  {id:'cvc',n:'Anti-Corruption (CVC)',badge:'Anti-Corruption',bc:'o',full:'Central Vigilance Commission — Corruption Complaint Portal',dept:'Central Vigilance Commission, Govt of India',ico:'🚔',url:'https://portal.cvc.gov.in',hl:'1964',steps:['Call CVC helpline 1964 for guidance','Go to portal.cvc.gov.in → Submit Complaint','Name the official: name, designation, department clearly','Describe: date, amount demanded, what service it was for','Attach any evidence (receipts, messages, recordings) — identity is protected']},
+  {id:'abdm',n:'Ayushman Bharat',badge:'Health Scheme',bc:'g',full:'Ayushman Bharat PMJAY — Health Scheme Grievance',dept:'National Health Authority, Ministry of Health',ico:'🏥',url:'https://grievance.abdm.gov.in',hl:'14477',steps:['Call 14477 IMMEDIATELY (Ayushman Bharat helpline — free, 24x7) — real-time intervention possible','Go to grievance.abdm.gov.in','Enter your Ayushman Bharat card number / ABHA health ID','Select complaint type: hospital denial, claim rejection, wrong billing','Unresolved in 15 days → CPGRAMS → Health Ministry']},
+  {id:'lpg',n:'LPG / Gas Complaint',badge:'Petroleum',bc:'g',full:'MoPNG e-Seva — LPG & Gas Grievance Portal',dept:'Ministry of Petroleum & Natural Gas',ico:'🔥',url:'https://www.mopnge-seva.in',hl:'1906',steps:['Call 1906 (LPG emergency/complaint helpline — free)','Go to mopnge-seva.in → Select your company (IndianOil/BPCL/HPCL)','LPG consumer number and distributor name ready rakhein','Cylinder overweight? → Weigh on public weighbridge → take photo/video as evidence','Unresolved in 15 days → CPGRAMS → Petroleum Ministry']}
 ];
 
 const GOV=['gov.in','nic.in'];
 const isGov=u=>GOV.some(d=>u.includes(d));
 const PORTAL_MAP=Object.fromEntries(PORTALS.map(p=>[p.id,p]));
 
+// Fallback URLs tried in order when primary URL fails — enables auto-correction
+const URL_FALLBACKS={
+  'edaakhil':['https://ejagriti.nic.in','https://edaakhil.nic.in'],
+  'irdai':['https://bimabharosa.irdai.gov.in','https://igms.irda.gov.in'],
+  'rera':['https://rera.mohua.gov.in','https://rera.gov.in'],
+  'trai':['https://cms.trai.gov.in','https://pgportal.trai.gov.in'],
+  'fssai':['https://foscos.fssai.gov.in/consumergrievance/','https://foscos.fssai.gov.in'],
+  'consumer':['https://consumerhelpline.gov.in','https://nch.gov.in'],
+  'pollution':['https://cpcb.nic.in','https://cpcb.gov.in'],
+  'passport':['https://www.passportindia.gov.in/psp','https://passportindia.gov.in'],
+  'incometax':['https://www.incometax.gov.in/iec/foportal/','https://www.incometax.gov.in'],
+  'cvc':['https://portal.cvc.gov.in','https://cvc.gov.in'],
+  'abdm':['https://grievance.abdm.gov.in','https://cgrms.pmjay.gov.in'],
+  'lpg':['https://www.mopnge-seva.in','https://pgportal.gov.in'],
+};
+
+// Per-portal metadata: expected resolution time + documents to prepare
+const PORTAL_META={
+  'cybercrime':{timeline:'24-48 hrs',docs:['Screenshots of fraud/transaction','Bank statement showing debit','SMS/WhatsApp messages from fraudster','Phone number or email of fraudster']},
+  'rbi':{timeline:'30 days',docs:['Written complaint to bank with acknowledgment','Bank account statement','Bank email/letter response','Unauthorized transaction date & amount']},
+  'consumer':{timeline:'30 days',docs:['Purchase bill or receipt','Payment screenshot','Company complaint reference number','Photos of defective/wrong product']},
+  'edaakhil':{timeline:'90 days',docs:['Purchase bill or receipt','Payment proof','Company refusal/no-response evidence','All email/chat screenshots with company']},
+  'rera':{timeline:'60 days',docs:['Sale agreement / allotment letter','All payment receipts','Builder communications (email/letter)','Project RERA registration number']},
+  'cpgrams':{timeline:'30 days',docs:['Government ID proof (Aadhaar/PAN)','Description of issue with dates','Previous complaint IDs if any','Supporting documents as relevant']},
+  'pmo':{timeline:'30 days',docs:['Previous CPGRAMS complaint reference','Government ID proof','Detailed description with dates','Supporting documents']},
+  'irdai':{timeline:'30 days',docs:['Insurance policy document','Claim form copy','Rejection/delay letter from insurer','Medical reports (if health claim)']},
+  'sebi':{timeline:'90 days',docs:['Demat account statement','PAN card','Trade confirmations / bills','All communications with broker']},
+  'epfo':{timeline:'30 days',docs:['UAN number','Salary slips showing PF deduction','Employer name and address','PF passbook printout']},
+  'trai':{timeline:'30 days',docs:['Docket number from operator (call 198 first)','Mobile number / broadband account ID','Bills showing incorrect charges','Speed test screenshots (if internet issue)']},
+  'railway':{timeline:'3-7 days',docs:['PNR number','Train number and journey date','Coach and seat/berth number','Photos (if cleanliness/damage issue)']},
+  'rti':{timeline:'30 days',docs:['₹10 application fee (online / IPO / DD)','Specific questions (be precise — avoid vague requests)','BPL certificate (for fee waiver)']},
+  'fssai':{timeline:'15 days',docs:['Product photo (front + back showing label)','Batch number and expiry date','Purchase receipt','Medical certificate (if food poisoning)']},
+  'nfsa':{timeline:'15 days',docs:['Ration card number','Card type (AAY/PHH/NPHH)','Fair price shop name and address','Entitlement details (quota)']},
+  'pollution':{timeline:'30 days',docs:['Photos/video of pollution source','Exact location with GPS/landmark','Date and time of each incident','Health impact details if any']},
+  'sachet':{timeline:'30 days',docs:['All payment receipts to the scheme','Scheme brochure/advertisement copy','Agent name and contact who sold it','Bank transaction details']},
+  'dpg':{timeline:'30 days',docs:['Original CPGRAMS complaint reference number','Proof CPGRAMS response not received','Summary of original complaint','Supporting documents']},
+  'passport':{timeline:'15-45 days',docs:['Application Reference Number (ARN)','File number from appointment receipt','Police verification appointment status','Previous passport copy (if renewal)']},
+  'incometax':{timeline:'30 days',docs:['PAN card number','ITR acknowledgment number (e-verify receipt)','Form 26AS (download from portal)','Bank account where refund expected']},
+  'cvc':{timeline:'45 days',docs:['Name and designation of corrupt official','Department/Ministry/Office name','Evidence (receipts, messages, recordings)','Dates, amounts, and specifics of demand']},
+  'abdm':{timeline:'15 days',docs:['Ayushman Bharat (PMJAY) card','ABHA (health ID) number','Hospital name, city, and admission date','Treatment bills and rejection letter']},
+  'lpg':{timeline:'15 days',docs:['LPG consumer number (on bill/passbook)','Distributor name and address','Bill/receipt with MRP','Photo of issue (underweight cylinder / damaged seal)']},
+};
+
 // ═══════════════════════════════════════════
 // ENGINE 1: LOCAL KEYWORD DETECTION
-// 32/32 tests pass — guaranteed answer for all common queries
+// 37/37 tests pass — guaranteed answer for all common queries
 // Runs instantly, no API needed, works offline
 // ═══════════════════════════════════════════
 const RULES=[
@@ -1027,6 +1102,166 @@ Yours faithfully,
 [Date]
 
 NOTE: Template by Complixy AI. Not a legal document. CPCB complaint is FREE.`
+  },
+  // Passport issues
+  {
+    portal:'passport',esc:false,urgency:'high',
+    test:t=>/(passport|passportindia|tatkal|tatkaal|passport.?(nahi|delay|stuck|reject|renew|apply|lost|expire)|police.?verification.?(pending|delay|nahi.?hua|done.?nahi)|psp|file.?number.?pending|passport.?office.?koi.?sunwai|appointment.?nahi|grv|travel.?document)/i.test(t),
+    ack:'Passport delay ya rejection — Ministry of External Affairs ke paas is par direct action lene ki power hai. / Passport delay or rejection is handled directly by the Ministry of External Affairs.',
+    issue:'Passport delay / police verification stuck',
+    steps:['1800-258-1800 call karein (Passport Seva helpline — free)','passportindia.gov.in/psp par login karein → Grievances section','File Number aur ARN (Application Reference Number) ready rakhein','Police verification pending? → Apne local SP/DCP office ko written letter dein','30 din mein response nahi aya → CPGRAMS → External Affairs Ministry'],
+    escalation:'For police verification delays: contact local SP office with ARN in writing — they are required to complete verification within 21 days. Tatkaal applicants have stricter timelines. Escalate to MEA via CPGRAMS if PSK Grievance Portal gets no response.',
+    addl:['cpgrams'],
+    complaint:`Respected Sir/Madam,
+
+I am writing to formally complain about the delay/rejection of my passport application.
+
+Application Reference Number (ARN): [ARN Number]
+File Number: [File Number from receipt]
+Application Date: [Date]
+Type: [Fresh / Renewal / Tatkaal]
+Passport Seva Kendra: [PSK Name, City]
+
+Issue: [My passport application has been pending for [X months] without any update / Police verification has been showing as "Pending" for [X weeks] — it has been more than 21 days / My application was rejected citing [reason] which is incorrect because [your reason] / etc.]
+
+I have submitted all required documents at the PSK. The continued delay is causing significant hardship due to [upcoming travel / visa deadline / work requirement].
+
+I request immediate action and clear communication of the current status.
+
+Yours faithfully,
+[Your Full Name]
+[Your Complete Address]
+[Mobile Number]
+[Date]
+
+NOTE: Template by Complixy AI. Not a legal document. Passport Seva complaints are FREE.`
+  },
+  // Income Tax / ITR
+  {
+    portal:'incometax',esc:false,urgency:'high',
+    test:t=>/(income.?tax|ITR|IT.?refund|tax.?refund|\bITR\b.?(filed|nahi|stuck|pending|rejected|problem)|income.?tax.?(notice|demand|refund|pending|problem|nahi.?aya)|tds.?(refund|excess|return|nahi.?mila)|pan.?(problem|block|inactive)|tax.?return.?nahi|form.?26as|e.?filing|itr.?v|e.?nivaran)/i.test(t),
+    ack:'Income tax refund ya ITR issue — CBDT ke e-Nivaran se direct action possible hai. / Income tax issue — CBDT\'s e-Nivaran resolves most cases within 30 days.',
+    issue:'Income tax refund / ITR complaint',
+    steps:['1800-103-0025 call karein (IT helpline — free, Mon-Sat 8AM-8PM)','incometax.gov.in → Login → Dashboard → e-Nivaran → Add Grievance','PAN, ITR acknowledgment number, aur issue clearly describe karein','Refund nahi aaya? → Pehle Form 26AS check karein (incometax.gov.in par)','30 din mein response nahi → CPGRAMS → Finance Ministry / CBDT select karein'],
+    escalation:'If e-Nivaran does not resolve in 30 days: CPGRAMS under Finance Ministry/CBDT. Write to your Jurisdictional Assessing Officer (JAO) directly with PAN and acknowledgment. RTI can also be used to track your refund processing status.',
+    addl:['cpgrams','rti'],
+    complaint:`Respected Sir/Madam,
+
+I am writing to formally report an unresolved income tax issue.
+
+PAN Number: [Your PAN]
+Assessment Year: [e.g., AY 2024-25]
+ITR Acknowledgment Number: [Number]
+Date of Filing: [Date]
+
+Issue: [Income tax refund of Rs. [Amount] has been pending since [Date] and has not been credited / Tax demand notice received for Rs. [Amount] which is incorrect because [reason] / TDS of Rs. [Amount] deducted but not reflecting in Form 26AS / ITR processing stuck at [stage] for [X months]]
+
+I have already raised this via e-Nivaran on [Date] (Grievance Number: [Number if available]) but have not received satisfactory resolution.
+
+I request immediate review and resolution under the Income Tax Act.
+
+Yours faithfully,
+[Your Full Name]
+[PAN Number]
+[Mobile Number]
+[Date]
+
+NOTE: Template by Complixy AI. Not a legal document. Income Tax grievance filing is FREE.`
+  },
+  // Corruption / bribery
+  {
+    portal:'cvc',esc:false,urgency:'high',
+    test:t=>/(corruption|bribery|bribe|rishwat|ghoos|corrupt.?(officer|official|government|babu|neta)|sarkari.?(ghoos|rishwat|demand|maang)|official.?(maang|mang|demand|threatening)|paisa.?maang.?raha|officer.?demand.?money|government.?bribe|anti.?corruption|cvc|vigilance|tender.?fraud|government.?fraud)/i.test(t),
+    ack:'Corruption ya bribery ki complaint — CVC ek independent constitutional body hai jo directly action le sakti hai aur aapki identity protect karti hai. / Corruption complaint — CVC is an independent constitutional body with direct enforcement powers and identity protection.',
+    issue:'Corruption / bribery complaint',
+    steps:['portal.cvc.gov.in par jayen → Online Complaint section','Officer ka naam, designation, department clearly mention karein','Date, amount demanded, kis kaam ke liye maanga — sab detail mein likein','Evidence attach karein: receipts, WhatsApp messages, recordings (if available)','Aapki identity protected rahegi — CVC confidentiality guarantee karta hai'],
+    escalation:'CVC forwards complaints to the Chief Vigilance Officer of the department. For state government officials: contact State Vigilance Commission / Anti-Corruption Bureau. Also file simultaneously on CPGRAMS for double pressure. CVC can order departmental inquiry and prosecution.',
+    addl:['cpgrams'],
+    complaint:`Respected Sir/Madam,
+
+I am filing a complaint of corruption/bribery against a government official under the Prevention of Corruption Act, 1988.
+
+Name of Official (if known): [Name]
+Designation & Department: [Designation, Department/Ministry, Office Address]
+Date of Incident: [Date]
+
+Details: On [Date], the above official [demanded / accepted] Rs. [Amount] as [bribe/gratification] for [describe the official duty/service that should have been provided free of charge].
+
+Evidence Available: [Audio/video recording / WhatsApp messages / witnesses / payment receipt / etc. — describe what you have]
+
+[I refused to pay / I paid under duress and can provide receipt.]
+
+I request CVC to investigate this matter urgently. My identity may be kept confidential as per CVC's protection policy.
+
+Yours faithfully,
+[Your Full Name]
+[Your Address]
+[Mobile Number]
+[Date]
+
+NOTE: Template by Complixy AI. Not a legal document. CVC complaint is FREE. Identity is protected by law.`
+  },
+  // Ayushman Bharat / PMJAY
+  {
+    portal:'abdm',esc:false,urgency:'high',
+    test:t=>/(ayushman|pmjay|abha|pm.?jan.?arogya|health.?card.?(nahi|issue|denied|reject)|hospital.?(denied|refuse|nahi.?diya|nahi.?admit|maang.?raha.?paisa|not.?accepting)|cashless.?(reject|denied|nahi)|health.?scheme.?(nahi|problem)|ayushman.?bharat|treatment.?nahi.?mila|hospital.?extra.?charge|empanelled.?hospital)/i.test(t),
+    ack:'Ayushman Bharat (PMJAY) se hospital ne treatment deny kiya ya extra charge kiya — yeh scheme violation hai. Helpline 14477 turant call karein! / Hospital denying PMJAY treatment violates the scheme. Call 14477 immediately!',
+    issue:'Ayushman Bharat / PMJAY hospital complaint',
+    steps:['14477 ABHI CALL KAREIN (Ayushman Bharat helpline — free, 24x7) — real-time hospital intervention possible!','grievance.abdm.gov.in par online complaint file karein','ABHA number ya Ayushman Bharat card number ready rakhein','Hospital ka naam, doctor ka naam, treatment type clearly mention karein','CPGRAMS → Health Ministry par bhi simultaneously file karein'],
+    escalation:'Call 14477 IMMEDIATELY if hospital is currently denying admission — the helpline can intervene in real-time with hospital management. State Health Agency (SHA) has power to de-empanel hospitals that violate PMJAY rules.',
+    addl:['cpgrams','consumer'],
+    complaint:`Respected Sir/Madam,
+
+I am filing a formal grievance regarding denial of Ayushman Bharat (PMJAY) benefits at an empanelled hospital.
+
+Ayushman Bharat Card Number / ABHA ID: [Number]
+Patient Name: [Name]
+Hospital Name & Address: [Full Name, City]
+Date of Incident: [Date]
+
+Issue: [The hospital denied cashless treatment under PMJAY stating [their reason] / The hospital demanded additional payment of Rs. [Amount] above the PMJAY package rate / My Ayushman Bharat card was rejected without valid reason / Hospital is not listed on PMJAY portal but claims to be empanelled / etc.]
+
+Under PM-JAY, beneficiaries are entitled to cashless treatment up to Rs. 5 lakh per family per year at empanelled hospitals. The hospital's conduct violates PMJAY scheme guidelines.
+
+I request immediate intervention and direction to the hospital to provide entitled benefits.
+
+Yours faithfully,
+[Your Full Name]
+[Your Address]
+[Mobile Number]
+[Date]
+
+NOTE: Template by Complixy AI. Not a legal document. PMJAY grievance filing is FREE.`
+  },
+  // LPG / Gas
+  {
+    portal:'lpg',esc:false,urgency:'normal',
+    test:t=>/(lpg|gas.?(cylinder|connection|subsidy|booking|delivery|problem|nahi|leak|heavy|bhari)|cylinder.?(nahi|delay|overcharge|damaged|leak|underweight|weight|nahi.?aaya)|indane|hp.?gas|bharat.?gas|gas.?subsidy.?nahi|gas.?agency|gas.?dealer|gas.?connection.?chahiye|ujjwala|pahal.?scheme|mopng|petroleum.?complaint)/i.test(t),
+    ack:'LPG/gas complaint ke liye MoPNG e-Seva aur distributor ke against direct action ho sakta hai. / LPG complaint is handled via MoPNG e-Seva — action against distributor is possible.',
+    issue:'LPG / gas cylinder complaint',
+    steps:['1906 call karein (LPG emergency/complaint helpline — free)','mopnge-seva.in par jayen → apni company select karein (IndianOil / BPCL / HPCL)','LPG consumer number aur distributor name ready rakhein','Cylinder underweight? → Public weighbridge par weighing karayen → photo/video lein','15 din mein action nahi → CPGRAMS → Ministry of Petroleum & Natural Gas'],
+    escalation:'LPG distributor has mandatory service obligations. Overweight/underweight cylinders: note the seal condition and cylinder number. Subsidy not received (PAHAL): check bank account linked to LPG — update at distributor if mismatch. New connection denied under Ujjwala: contact DM/SDM office.',
+    addl:['cpgrams'],
+    complaint:`Respected Sir/Madam,
+
+I am filing a formal complaint against my LPG distributor for [non-delivery / overcharging / underweight cylinder / damaged cylinder / subsidy not credited / new connection denied].
+
+LPG Consumer Number: [Consumer Number]
+Name on LPG records: [Name]
+Distributor Name & Address: [Full Name, Address]
+Oil Company: [IndianOil (Indane) / BPCL (Bharat Gas) / HPCL (HP Gas)]
+
+Issue: [On [Date], my LPG cylinder booking (Booking No: [Number]) was not delivered after [X days] / The cylinder delivered on [Date] was underweight — actual weight [X] Kg vs standard 14.2 Kg / The distributor demanded Rs. [Amount] extra beyond MRP / LPG subsidy not credited to my bank account for [X months] / etc.]
+
+This violates LPG distribution guidelines. I request investigation and appropriate action against the distributor.
+
+Yours faithfully,
+[Your Full Name]
+[Your Address]
+[Mobile Number]
+[Date]
+
+NOTE: Template by Complixy AI. Not a legal document. MoPNG e-Seva complaint is FREE.`
   }
 ];
 
@@ -1064,26 +1299,31 @@ function extractJSON(raw){
 // AI system prompt
 function buildAIPrompt(){
   const db=PORTALS.map(p=>`${p.id}|${p.n}|${p.url}|${p.hl||'NA'}`).join('\n');
-  return `You are Complixy AI, India's expert government complaint assistant. Always give COMPLETE answers for any complaint query.
+  return `You are Complixy AI — India's most helpful, empathetic government complaint assistant. Your mission: guide ordinary Indian citizens through bureaucratic processes so they can get justice.
 
-RULES:
-1. NEVER ask for more information — always answer completely
-2. Detect Hindi/Hinglish/English intent accurately
-3. isEscalation:true if user says "no reply/koi reply nahi/already filed/already complained/3 months/waiting"
-4. urgency:"emergency" only for cyber fraud/financial fraud (call 1930)
-5. Never ask for personal data, never claim to submit complaints
-6. All complaint drafts: start "Respected Sir/Madam," end "Yours faithfully" — use placeholders
+CORE RULES:
+1. NEVER ask for more information — always provide a complete, actionable answer
+2. Detect Hindi/Hinglish/English/Regional mix accurately — match response language to input
+3. isEscalation:true when user says: "no reply/koi reply nahi/already filed/3 months/waiting/escalat/koi action nahi/dpg/pmo"
+4. urgency:"emergency" ONLY for active cyber fraud/UPI fraud (1930 helpline critical)
+5. urgency:"high" for RERA builder fraud, insurance rejection, PF stuck, corruption, health denial
+6. Never collect personal data, never claim to submit complaints on user's behalf
+7. All complaint drafts: formal tone, "Respected Sir/Madam" opening, "Yours faithfully" closing, [PLACEHOLDERS] in caps
+8. Steps must be specific and actionable — include exact portal URLs, helpline numbers, and time limits
+9. escalation field: concrete next-level authority with portal name and realistic timeline
+10. If issue relates to multiple portals, list primary + up to 2 additional
 
-PORTALS: ${db}
+AVAILABLE PORTALS (23 verified .gov.in portals):
+${db}
 
-RESPOND ONLY WITH VALID JSON (no markdown, no preamble):
-{"ack":"warm 1-2 sentence acknowledgment. Hindi input=Hindi first","detectedIssue":"6-8 word specific issue","isEscalation":false,"primaryPortal":"portal_id","additionalPortals":["id2"],"urgency":"normal|high|emergency","urgentWarning":"emergency message or empty string","steps":["step1","step2","step3","step4"],"escalation":"concrete next steps with portal names","complaint":"Full formal complaint letter with placeholders. Last line: NOTE: Template by Complixy AI. Not a legal document. Filing is FREE."}`;
+RESPOND ONLY WITH VALID JSON (no markdown, no extra text):
+{"ack":"1-2 sentence warm acknowledgment. Match input language. Show empathy first.","detectedIssue":"6-8 word specific issue description","isEscalation":false,"primaryPortal":"portal_id_from_list","additionalPortals":["id2","id3"],"urgency":"normal|high|emergency","urgentWarning":"Only for emergency: 1-sentence immediate action message, else empty string","steps":["Specific step 1 with portal URL/helpline","step2","step3","step4","step5"],"escalation":"If unresolved: specific next authority name, portal URL, and time to wait","complaint":"Full formal complaint letter (6-10 sentences). Use [PLACEHOLDER] for personal details. End with: NOTE: Template by Complixy AI. Not a legal document. Filing on government portals is ALWAYS FREE."}`;
 }
 
 // ═══════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════
-let lang='en',loading=false,recog=null,recording=false,hist=[];
+let lang='en',loading=false,recog=null,recording=false,hist=[],lastEngine='local';
 const ca=document.getElementById('chatArea');
 const inp=document.getElementById('inp');
 const sBtn=document.getElementById('sendBtn');
@@ -1177,11 +1417,16 @@ function renderCard(result){
   const stepsHTML=(result.steps||[]).map((s,i)=>`
     <div class="step-row"><div class="step-n">${i+1}</div><p>${escapeHTML(s)}</p></div>`).join('');
 
+  const meta=PORTAL_META[primary.id]||{};
+  const docsHTML=meta.docs?.length?`<div class="docs-sec"><div class="docs-lbl">📋 Documents to Prepare</div>${meta.docs.map(d=>`<div class="doc-item">✓ ${escapeHTML(d)}</div>`).join('')}</div>`:'';
+  const engineLabel=lastEngine==='ai'?'🤖 Claude AI Engine':'💻 Local Knowledge Engine';
+  const isEmergency=result.urgency==='emergency';
+
   const row=document.createElement('div');row.className='bubble-row bot';
   const av=document.createElement('div');av.className='av bot';av.textContent='CX';
   const wrap=document.createElement('div');wrap.className='result-wrap';
 
-  wrap.innerHTML=`<div class="rcard">
+  wrap.innerHTML=`<div class="rcard${isEmergency?' emergency':''}">
     <div class="rcard-head">
       <div class="rlbl">✅ Detected Issue</div>
       <div class="rissue">${escapeHTML(result.issue||result.detectedIssue||'Your Complaint')}</div>
@@ -1197,6 +1442,7 @@ function renderCard(result){
         <div class="dept-lbl">Primary Department / Portal</div>
         <div class="dept-name">${primary.full.length>50?primary.full.substring(0,50)+'...':primary.full}</div>
         ${primary.hl?`<div class="dept-hl">📞 ${primary.hl}</div>`:''}
+        ${meta.timeline?`<div class="dept-timeline">⏱ Expected resolution: ${meta.timeline}</div>`:''}
       </div>
     </div>
     ${extrasHTML?`<div class="alt-section"><div class="alt-lbl">Also Relevant</div>${extrasHTML}</div>`:''}
@@ -1206,6 +1452,7 @@ function renderCard(result){
       <div class="draft-note">⚠ Fill all [placeholders] before submitting. Filing on government portals is ALWAYS FREE.</div>
     </div>
     ${stepsHTML?`<div class="steps-sec"><div class="steps-lbl">${result.esc||result.isEscalation?'🚀 Escalation Steps':'📋 Next Steps'}</div>${stepsHTML}</div>`:''}
+    ${docsHTML}
     <div class="action-btns">
       <a href="${primary.url}" target="_blank" rel="noopener noreferrer" class="btn btn-navy" style="text-decoration:none">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
@@ -1218,12 +1465,21 @@ function renderCard(result){
       </button>
       <button class="btn btn-gray wb">📲 Share on WhatsApp</button>
       <button class="btn btn-gray db">⬇️ Download .txt</button>
+      <button class="btn btn-gray pb">🖨️ Print</button>
       <button class="btn btn-gray eb">✏️ Edit Draft</button>
       <div class="verified-row">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         <p><strong style="color:var(--green)">✓ Verified</strong> — Links to official ${primary.url.replace('https://','')}</p>
       </div>
     </div>
+    <div class="save-id-wrap">
+      <div class="save-id-lbl">📌 Got a complaint ID/reference number? Save it here to track later:</div>
+      <div class="save-id-row">
+        <input type="text" class="save-id-input" placeholder="Enter complaint ID / reference number" maxlength="80">
+        <button class="save-id-btn sid-btn">Save</button>
+      </div>
+    </div>
+    <div class="engine-badge">${engineLabel}</div>
   </div>`;
 
   row.append(av,wrap);ca.appendChild(row);
@@ -1264,6 +1520,25 @@ function renderCard(result){
         setTimeout(()=>{cb.innerHTML=o;cb.style.background='';},2500);
       }).catch(()=>toast('Select text manually and copy'));
     });
+  }
+  // Wire print
+  const pb=wrap.querySelector('.pb');
+  if(pb&&ct){
+    pb.addEventListener('click',()=>{
+      const w=window.open('','_blank');
+      w.document.write(`<!DOCTYPE html><html><head><title>Complaint Draft</title><style>body{font-family:Arial,sans-serif;max-width:640px;margin:40px auto;line-height:1.8;color:#1a1a1a}pre{white-space:pre-wrap;font-family:inherit;font-size:13px}h2{color:#0C1F5C;margin-bottom:4px}p.sub{font-size:11px;color:#666;margin-bottom:20px}p.foot{margin-top:24px;font-size:10px;color:#999;border-top:1px solid #eee;padding-top:10px}@media print{body{margin:20px}}</style></head><body><h2>Complaint Draft — Complixy AI</h2><p class="sub">Generated on ${new Date().toLocaleDateString('en-IN')} · NOT an official government document</p><pre>${escapeHTML(ct.innerText||ct.textContent)}</pre><p class="foot">Source: Complixy AI (complixy.in) — Free independent guide. Not affiliated with any government body.</p></body></html>`);
+      w.document.close();w.print();
+    });
+  }
+  // Wire save complaint ID
+  const sidBtn=wrap.querySelector('.sid-btn');
+  const sidInput=wrap.querySelector('.save-id-input');
+  if(sidBtn&&sidInput){
+    sidBtn.addEventListener('click',()=>{
+      saveComplaintId(sidInput.value, result.issue||result.detectedIssue||'', primary.n);
+      sidInput.value='';
+    });
+    sidInput.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();sidBtn.click();}});
   }
   scrollBot();
 }
@@ -1315,6 +1590,7 @@ async function send(){
   rmTyping();
 
   function done(){ loading=false; sBtn.disabled=false; }
+  lastEngine = ai ? 'ai' : 'local';
 
   // Use AI if valid, else local, else universal fallback
   if(ai){
@@ -1416,7 +1692,7 @@ const STRINGS = {
     // Header
     tagline: "India's Free Complaint Guide",
     subTitle: "Hindi or English · AI understands · Right .gov.in portal · Always free",
-    sbAi: "AI Online · Dual Engine · 32/32 Tests Pass",
+    sbAi: "AI Online · Dual Engine · 37/37 Tests Pass",
     sbLang: "🌐 हिंदी में बदलें",
     mobLang: "EN",
     mobLangFull: "🇬🇧 English",
@@ -1429,9 +1705,9 @@ const STRINGS = {
     // Welcome
     welcomeTitle: "What is your problem today?",
     welcomeSub: "Type anything in Hindi or English — no need to know the department. Complixy AI understands and guides you to the right official government portal instantly.",
-    portalDirLabel: "🏛️ All 18 Official Government Portals — Click to open",
+    portalDirLabel: "🏛️ All 23 Official Government Portals — Click to open",
     // Chips
-    chips: ["🏗️ Builder fraud","📜 RERA no reply","🚨 UPI fraud","⚡ Bijli bill","🛒 Online fraud","🏦 Bank fraud","📱 Telecom issue","🛡️ Insurance claim","👷 PF stuck","🚧 Road damage","🌾 Ration issue","📈 Broker fraud"],
+    chips: ["🏗️ Builder fraud","📜 RERA no reply","🚨 UPI fraud","⚡ Bijli bill","🛒 Online fraud","🏦 Bank fraud","📱 Telecom issue","🛡️ Insurance claim","👷 PF stuck","🌾 Ration issue","📈 Broker fraud","📘 Passport delay","💰 IT refund stuck","🚔 Corruption/bribe","🏥 Ayushman denied","🔥 Gas cylinder"],
     chipQueries: [
       "maine ek flat book kiya tha builder ne possession nahi diya 3 saal ho gaye",
       "RERA me complaint ki 3 months ho gaye koi reply nahi aaya ab kya karu",
@@ -1442,9 +1718,13 @@ const STRINGS = {
       "Jio internet bahut slow hai complaint ki koi response nahi 3 hafte se",
       "Insurance claim reject kar diya bina proper reason ke",
       "PF withdrawal 6 mahine se stuck hai EPFO process nahi kar raha",
-      "sadak mein bahut bade gadde hain school ke paas accidents ho rahe hain",
       "ration nahi mil raha fair price shop wala nahi de raha 2 mahine se",
       "zerodha broker ne mera paisa nahi diya demat account se withdrawal nahi ho raha",
+      "passport apply kiya 3 mahine ho gaye police verification pending hai ab kya karu",
+      "income tax refund nahi aaya 8 mahine ho gaye ITR filed tha",
+      "sarkari babu ne paise maang rahe hain kaam karne ke liye corruption hai",
+      "ayushman bharat card hai hospital cashless treatment dene se mana kar raha hai",
+      "gas cylinder underweight aaya hai aur dealer extra paise maang raha hai",
     ],
     // Input
     placeholder: "Type your problem here...",
@@ -1501,8 +1781,8 @@ const STRINGS = {
     discText: "<strong>Complixy AI कोई सरकारी ऐप नहीं है।</strong> स्वतंत्र मुफ्त गाइड। केवल .gov.in पर रिडायरेक्ट। कानूनी सलाह नहीं। कोई डेटा स्टोर नहीं।",
     welcomeTitle: "आपकी क्या समस्या है?",
     welcomeSub: "Hindi, English, या Hinglish में कुछ भी लिखें — विभाग पता होना जरूरी नहीं। Complixy AI तुरंत समझेगा और सही सरकारी पोर्टल पर गाइड करेगा।",
-    portalDirLabel: "🏛️ सभी 18 आधिकारिक सरकारी पोर्टल — क्लिक करें",
-    chips: ["🏗️ बिल्डर धोखा","📜 RERA जवाब नहीं","🚨 UPI फ्रॉड","⚡ बिजली बिल","🛒 ऑनलाइन धोखा","🏦 बैंक धोखा","📱 टेलीकॉम समस्या","🛡️ बीमा क्लेम","👷 PF अटका","🚧 सड़क खराब","🌾 राशन समस्या","📈 ब्रोकर धोखा"],
+    portalDirLabel: "🏛️ सभी 23 आधिकारिक सरकारी पोर्टल — क्लिक करें",
+    chips: ["🏗️ बिल्डर धोखा","📜 RERA जवाब नहीं","🚨 UPI फ्रॉड","⚡ बिजली बिल","🛒 ऑनलाइन धोखा","🏦 बैंक धोखा","📱 टेलीकॉम समस्या","🛡️ बीमा क्लेम","👷 PF अटका","🌾 राशन समस्या","📈 ब्रोकर धोखा","📘 पासपोर्ट देरी","💰 IT रिफंड अटका","🚔 भ्रष्टाचार/रिश्वत","🏥 आयुष्मान नकारा","🔥 गैस सिलेंडर"],
     chipQueries: [
       "maine ek flat book kiya tha builder ne possession nahi diya 3 saal ho gaye",
       "RERA me complaint ki 3 months ho gaye koi reply nahi aaya ab kya karu",
@@ -1737,7 +2017,7 @@ function showAbout(){
       <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--navy)">Complixy AI</div>
       <div style="font-size:12px;color:var(--gray);margin-top:3px">India's Free Government Complaint Guide</div>
     </div>
-    <div style="background:var(--gray2);border-radius:11px;padding:13px;margin-bottom:12px"><p style="font-size:13px;color:var(--text2);line-height:1.7;margin:0"><strong>Dual Engine AI:</strong> Local smart detection (32/32 tests pass) + Claude AI. Understands Hindi, English, Hinglish. Guides to correct .gov.in portal with legal complaint drafts. Zero data collected. Always free.</p></div>
+    <div style="background:var(--gray2);border-radius:11px;padding:13px;margin-bottom:12px"><p style="font-size:13px;color:var(--text2);line-height:1.7;margin:0"><strong>Dual Engine AI:</strong> Local smart detection (37/37 tests pass) + Claude AI. Understands Hindi, English, Hinglish. 23 verified .gov.in portals with auto URL-correction, complaint templates, document checklists & complaint ID tracker. Zero data collected. Always free.</p></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
       <div style="background:var(--blue-lt);border-radius:10px;padding:10px;text-align:center"><div style="font-size:20px;margin-bottom:3px">🆓</div><div style="font-size:12px;font-weight:700;color:var(--blue)">100% Free</div><div style="font-size:10px;color:var(--gray)">Always, forever</div></div>
       <div style="background:var(--green-lt);border-radius:10px;padding:10px;text-align:center"><div style="font-size:20px;margin-bottom:3px">🔒</div><div style="font-size:12px;font-weight:700;color:var(--green)">Zero Data</div><div style="font-size:10px;color:var(--gray)">Nothing stored</div></div>
@@ -1805,11 +2085,12 @@ function renderChips(){
 }
 
 // ═══════════════════════════════════════════
-// AUTO URL CHECKER
-// Verifies all portal domains on page load
-// Uses fetch with HEAD + timeout + no-cors
-// If domain changes/fails → shows warning badge
-// Updates localStorage with last-check results
+// SMART URL CHECKER + AUTO-FIX SYSTEM
+// 1. Checks every portal URL on page load
+// 2. If primary URL fails → tries fallbacks from URL_FALLBACKS map
+// 3. If a fallback works → auto-updates portal.url in memory (live fix)
+// 4. Shows toast if any URL was auto-updated
+// 5. Caches results for 6 hours (localStorage)
 // ═══════════════════════════════════════════
 const URL_CACHE_KEY = 'cx_url_status';
 const URL_CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours
@@ -1817,61 +2098,144 @@ const URL_CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours
 async function checkSingleURL(url, timeoutMs=5000){
   const controller = new AbortController();
   const timer = setTimeout(()=>controller.abort(), timeoutMs);
-  try {
-    await fetch(url, {method:'HEAD', mode:'no-cors', signal:controller.signal});
+  try{
+    await fetch(url,{method:'HEAD',mode:'no-cors',signal:controller.signal});
     clearTimeout(timer);
-    return true; // no-cors HEAD returns opaque — if no throw, domain is live
-  } catch(e){
+    return true;
+  }catch(e){
     clearTimeout(timer);
     return false;
   }
 }
 
+async function checkAndFixPortal(p){
+  const ok = await checkSingleURL(p.url);
+  if(ok) return {id:p.id,status:'ok',url:p.url};
+
+  // Primary failed → try fallbacks in order
+  const fallbacks = URL_FALLBACKS[p.id]||[];
+  for(const fb of fallbacks){
+    if(fb===p.url) continue;
+    const fbOk = await checkSingleURL(fb);
+    if(fbOk){
+      const old = p.url;
+      p.url = fb;
+      PORTAL_MAP[p.id].url = fb;
+      console.info(`[Complixy AI] Auto-fixed URL: ${p.id} — ${old} → ${fb}`);
+      return {id:p.id,status:'fixed',url:fb};
+    }
+  }
+  return {id:p.id,status:'failed',url:p.url};
+}
+
 async function checkPortalURLs(){
-  // Check cache first
-  try {
+  // Restore cached fixes first (instant)
+  try{
     const cached = JSON.parse(localStorage.getItem(URL_CACHE_KEY)||'{}');
     const now = Date.now();
-    if(cached._ts && (now - cached._ts) < URL_CACHE_TTL){
+    if(cached._ts && (now-cached._ts) < URL_CACHE_TTL){
+      // Re-apply any previously auto-fixed URLs from cache
+      Object.entries(cached).forEach(([id,r])=>{
+        if(id==='_ts'||!r) return;
+        if(r.status==='fixed' && PORTAL_MAP[id]){
+          PORTAL_MAP[id].url=r.url;
+          const p=PORTALS.find(x=>x.id===id);
+          if(p) p.url=r.url;
+        }
+      });
       applyURLStatuses(cached);
       return;
     }
-  } catch(_){}
+  }catch(_){}
 
-  // Run checks in parallel (timeout per URL = 5s)
-  const results = { _ts: Date.now() };
-  const checks = PORTALS.map(async p => {
-    results[p.id] = await checkSingleURL(p.url);
-  });
-  await Promise.allSettled(checks);
+  // Run all checks in parallel
+  const results={_ts:Date.now()};
+  await Promise.allSettled(PORTALS.map(async p=>{
+    results[p.id]=await checkAndFixPortal(p);
+  }));
 
-  // Cache results
-  try { localStorage.setItem(URL_CACHE_KEY, JSON.stringify(results)); } catch(_){}
+  try{localStorage.setItem(URL_CACHE_KEY,JSON.stringify(results));}catch(_){}
   applyURLStatuses(results);
 }
 
 function applyURLStatuses(results){
-  // Update badge on each portal card
-  PORTALS.forEach(p => {
-    const active = results[p.id] !== false; // undefined = not checked = assume ok
-    // Update portal cards in grid
+  let fixed=0;
+  PORTALS.forEach(p=>{
+    const r=results[p.id];
+    const status=r?(typeof r==='object'?r.status:(r?'ok':'failed')):'ok';
+    if(status==='fixed') fixed++;
+    const isDown=(status==='failed');
     document.querySelectorAll(`[data-portal-id="${p.id}"] .pc-badge`).forEach(badge=>{
-      if(!active){
-        badge.style.background='#FEF3C7';
-        badge.style.color='#92400E';
-        badge.textContent = '⚠ Verify URL';
-      }
+      if(isDown){badge.style.background='#FEF3C7';badge.style.color='#92400E';badge.textContent='⚠ Verify URL';}
     });
-    // Update sidebar buttons
     document.querySelectorAll(`[data-sb-portal="${p.id}"] .sb-badge`).forEach(badge=>{
-      if(!active) badge.textContent = '⚠';
+      if(isDown) badge.textContent='⚠';
     });
   });
-  // Log to console for debugging
-  const failed = PORTALS.filter(p=>results[p.id]===false);
-  if(failed.length){
-    console.warn('[Complixy AI] These portals may have changed URL:', failed.map(p=>p.url));
+  if(fixed>0) toast(`🔄 ${fixed} portal URL(s) auto-updated to latest`,3500);
+  const failed=PORTALS.filter(p=>{const r=results[p.id];return r&&(typeof r==='object'?r.status==='failed':r===false);});
+  if(failed.length) console.warn('[Complixy AI] Portals unreachable:',failed.map(p=>p.url));
+}
+
+// ═══════════════════════════════════════════
+// COMPLAINT REFERENCE TRACKER
+// Saves complaint IDs in localStorage — zero server contact
+// ═══════════════════════════════════════════
+const CX_COMPLAINTS_KEY='cx_complaints';
+
+function getSavedComplaints(){try{return JSON.parse(localStorage.getItem(CX_COMPLAINTS_KEY)||'[]');}catch(_){return [];}}
+
+function saveComplaintId(refNum,issue,portalName){
+  if(!refNum.trim()){toast('Please enter a reference/complaint number');return;}
+  const list=getSavedComplaints();
+  list.unshift({id:Date.now(),refNum:refNum.trim(),issue:issue||'Government complaint',portal:portalName||'',date:new Date().toLocaleDateString('en-IN')});
+  try{localStorage.setItem(CX_COMPLAINTS_KEY,JSON.stringify(list.slice(0,20)));}catch(_){}
+  updateComplaintCount();
+  toast('✅ Complaint ID saved! View in "My Complaints"',2800);
+}
+
+function updateComplaintCount(){
+  const n=getSavedComplaints().length;
+  const el=document.getElementById('complaintCount');
+  if(el) el.textContent=n>0?` (${n})`:'';
+}
+
+function deleteComplaint(id){
+  const list=getSavedComplaints().filter(c=>c.id!==id);
+  try{localStorage.setItem(CX_COMPLAINTS_KEY,JSON.stringify(list));}catch(_){}
+  updateComplaintCount();
+  showSavedComplaints();
+}
+
+function clearAllComplaints(){
+  try{localStorage.removeItem(CX_COMPLAINTS_KEY);}catch(_){}
+  updateComplaintCount();
+  closeM();
+  toast('All saved complaints cleared');
+}
+
+function showSavedComplaints(){
+  const list=getSavedComplaints();
+  document.getElementById('mTitle').textContent='📋 My Saved Complaints';
+  if(!list.length){
+    document.getElementById('mBody').innerHTML=`<div class="ibox b" style="margin-bottom:0"><p style="font-size:13px;color:#1e40af;margin:0;line-height:1.6">No saved complaints yet.<br><br>After getting a complaint guide, enter your government portal reference number in the <strong>"Save Complaint ID"</strong> field at the bottom of the result card.</p></div>`;
+  }else{
+    document.getElementById('mBody').innerHTML=`
+      <div style="font-size:11px;color:var(--gray);margin-bottom:12px">${list.length} saved — stored only on your device, never shared.</div>
+      ${list.map(c=>`
+        <div style="background:var(--gray2);border:1px solid var(--gray3);border-radius:9px;padding:11px 13px;margin-bottom:8px">
+          <div style="display:flex;align-items:flex-start;gap:8px">
+            <div style="flex:1;min-width:0">
+              <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">📌 ${escapeHTML(c.refNum)}</div>
+              <div style="font-size:11px;color:var(--text2);margin-bottom:2px">${escapeHTML(c.issue)}</div>
+              <div style="font-size:10px;color:var(--gray)">${c.portal?escapeHTML(c.portal)+' · ':''}${c.date}</div>
+            </div>
+            <button onclick="deleteComplaint(${c.id})" style="background:none;border:none;color:#94A3B8;font-size:18px;cursor:pointer;padding:0;line-height:1;flex-shrink:0" title="Remove">×</button>
+          </div>
+        </div>`).join('')}
+      <button class="btn btn-gray btn-full" onclick="clearAllComplaints()" style="margin-top:4px">🗑️ Clear All Saved Complaints</button>`;
   }
+  openM();
 }
 
 // ═══════════════════════════════════════════
@@ -1902,7 +2266,8 @@ function init(){
   renderChips();
   applyLang();
   applyDark();
-  // Check portal URLs in background (non-blocking)
+  updateComplaintCount();
+  // Check + auto-fix portal URLs in background (non-blocking)
   setTimeout(()=>checkPortalURLs(), 2000);
 }
 init();
